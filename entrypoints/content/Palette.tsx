@@ -67,15 +67,8 @@ const Palette: React.FC<{
         <CommandInput placeholder="Type a command or search..." autoFocus />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
+          
           <CommandGroup heading="Suggestions">
-            <CommandItem>Calendar</CommandItem>
-            <CommandItem>Search Emoji</CommandItem>
-            <CommandItem>Calculator</CommandItem>
-          </CommandGroup>
-          <CommandSeparator />
-          <CommandGroup heading="Settings">
-            <CommandItem>Profile</CommandItem>
-            <CommandItem>Billing</CommandItem>
             <CommandItem onSelect={onRemove}>Exit</CommandItem>
           </CommandGroup>
           <CommandSeparator />
@@ -106,7 +99,7 @@ const Palette: React.FC<{
                 <CommandItem
                   key={i}
                   value={'bm' + i}
-                  keywords={[bookmark.title]}
+                  keywords={[bookmark.title, bookmark.url]}
                   onSelect={() => {
                     onBookmarkSelect(bookmark)
                   }}

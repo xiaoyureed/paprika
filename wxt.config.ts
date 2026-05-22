@@ -33,7 +33,7 @@ export default defineConfig({
     return {
       name: 'Paprika',
       version: '1.0.0',
-      description: 'A Chrome extension to ask questions to manage your prompt templates',
+      description: 'A Chrome extension to ask questions or to manage your prompt templates',
       permissions: [
         'tabs',
         'bookmarks',

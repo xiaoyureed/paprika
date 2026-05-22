@@ -1,8 +1,15 @@
-<img src="assets/icon.png" width="96" height="96" alt="AI Ask" />
+<div align="center">
+  <img src="assets/icon.png" width="96" height="96" alt="Paprika" />
+  <p>
+    A personal browser extension for quick bookmark/tab search and prompt template injection into page input fields.
+  </p>
+</div>
+
+<a href="README.md">中文</a>
+
 
 # Paprika
 
-A personal browser extension for quick bookmark/tab search and prompt template injection into page input fields.
 
 ## Keyboard Shortcuts
 
@@ -27,4 +34,4 @@ Click "Prompt Manager" in the extension popup to open the management page. Suppo
 
 ## Todo
 
-**Context Menu**: Right-click on any page to trigger "Post Summary" or "Comment Summary" AI features.
+- [ ] **Context Menu**: Right-click on any page to trigger "Post Summary" or "Comment Summary" AI features.
