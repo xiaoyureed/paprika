@@ -8,6 +8,7 @@ import {
   CommandList,
 } from '@/components/ui/command'
 import { STORAGE_KEYS } from '@/utils/constants'
+import { useStorage } from "@/entrypoints/hooks/useStorage"
 
 interface PromptSelectorProps {
   onSelect: (content: string) => void
@@ -21,16 +22,7 @@ interface PromptSelectorProps {
  * 用户可搜索名称/内容/标签，选中后回调 onSelect。
  */
 const PromptSelector: React.FC<PromptSelectorProps> = ({ onSelect, onDismiss }) => {
-  const [prompts, setPrompts] = useState<Prompt[]>([])
-
-  useEffect(() => {
-    browser.storage.local.get(STORAGE_KEYS.prompts).then((obj) => {
-      const stored = obj[STORAGE_KEYS.prompts] as Prompt[] | undefined
-      if (Array.isArray(stored)) {
-        setPrompts(stored)
-      }
-    })
-  }, [])
+  const [prompts, setPrompts] = useStorage<Prompt[]>(STORAGE_KEYS.prompts, [])
 
   return (
     <Command
@@ -48,7 +40,7 @@ const PromptSelector: React.FC<PromptSelectorProps> = ({ onSelect, onDismiss }) 
       <CommandList>
         <CommandEmpty>无匹配提示词</CommandEmpty>
         <CommandGroup>
-          {prompts.map((p) => {
+          {prompts?.map((p) => {
             // 将名称、内容、标签合并为 value，cmdk 据此进行模糊匹配
             const searchValue = `${p.name} ${p.content} ${p.tags.join(' ')}`
             return (

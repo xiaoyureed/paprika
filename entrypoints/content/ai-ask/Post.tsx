@@ -7,7 +7,7 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
-import { useStorage } from '../hooks/useStorage'
+import { useStorage } from '../../hooks/useStorage'
 import { STORAGE_KEYS } from '@/utils/constants'
 import { ScrollArea } from '@/components/ui/scroll-area'
 

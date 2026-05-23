@@ -70,7 +70,42 @@ function listenMessage() {
           browser.runtime.openOptionsPage();
           sendResponse({ success: true, fallback: true });
         }
-      } else {
+      }
+
+      // 书签按需搜索：空查询返回最近 10 条，非空查询调用 bookmarks.search()
+      else if (message.action === 'palette-typing') {
+        const { query, seq } = message.payload as PaletteTypingPayload
+
+        if (!query || query.trim() === '') {
+          browser.bookmarks.getRecent(10).then((recent) => {
+            const results: IBookmark[] = recent
+              .filter((item) => item.url)
+              .map((item) => ({
+                id: parseInt(item.id, 10),
+                title: item.title || 'Untitled',
+                url: item.url!,
+                path: '',
+              }))
+            sendResponse({ results, totalCount: results.length, seq })
+          })
+        } else {
+          browser.bookmarks.search(query).then((items) => {
+            const results: IBookmark[] = items
+              .filter((item) => item.url)
+              .map((item) => ({
+                id: parseInt(item.id, 10),
+                title: item.title || 'Untitled',
+                url: item.url!,
+                path: '',
+              }))
+            sendResponse({ results, totalCount: results.length, seq })
+          })
+        }
+
+        return true
+      }
+
+      else {
         console.error('unknown action:', message.action)
       }
     },
@@ -105,9 +140,6 @@ function listenShortcuts() {
       browser.tabs.sendMessage(
         tab.id!,
         { action: 'palette' } as IMessage,
-        // (res) => {
-        //   console.log('background: send [palette], got resp:', res)
-        // },
       )
     }
   })
@@ -149,17 +181,13 @@ function createContextMenus() {
       browser.tabs.sendMessage(
         tab.id,
         { action: 'post' } as IMessage,
-        // 没有消息要接受， 就注释掉， 否则报错
+        // 没有消息要接受， 就注释掉， 否则报错   , browser.runtime.lastError 会报错
         // (res) => {
         //   console.log('background: got resp:', res)
         // },
       )
     }
-    /**
-     *   if (browser.runtime.lastError) {
-            return
-          }
-     */
+  
     if (clickData.menuItemId === comment) {
       browser.tabs.sendMessage(tab.id, { action: 'comment' } as IMessage)
     }
