@@ -62,6 +62,15 @@ export async function createPromptSelectorUI(
       `
       uiContainer.append(root)
 
+      // ---- 暗黑模式：跟随 OS prefers-color-scheme ----
+      const darkMedia = window.matchMedia('(prefers-color-scheme: dark)')
+      const updateDarkClass = () => {
+        root.classList.toggle('dark', darkMedia.matches)
+      }
+      updateDarkClass()
+      darkMedia.addEventListener('change', updateDarkClass)
+      cleanups.push(() => darkMedia.removeEventListener('change', updateDarkClass))
+
       // ---- 内部回调 ----
 
       const handleSelect = (content: string) => {

@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 
 const Comment: React.FC<{
   children?: React.ReactNode
-  onRemove: () => void
+  onRemove?: () => void
 }> = ({ onRemove }) => {
   return (
     <div>

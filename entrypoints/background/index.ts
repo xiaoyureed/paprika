@@ -105,6 +105,14 @@ function listenMessage() {
         return true
       }
 
+      // 记事本功能
+      else if (message.action === 'notepad') {
+        browser.tabs.create({
+          active: true,
+          url: message.payload,
+        })
+      }
+
       else {
         console.error('unknown action:', message.action)
       }

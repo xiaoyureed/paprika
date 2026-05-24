@@ -6,6 +6,7 @@ interface IMessage<T = any> {
     | 'palette'
     | 'get-tabs'
     | 'switch-tab'
+    | 'notepad'
     | 'get-bookmarks'
     | 'open-bookmark'
     | 'openOptionsPage'

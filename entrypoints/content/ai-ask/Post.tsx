@@ -13,7 +13,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 
 const Post: React.FC<{
   children?: React.ReactNode
-  onRemove: () => void
+  onRemove?: () => void
 }> = ({ onRemove }) => {
   const [formData, setFormData] = useStorage<FormData>(STORAGE_KEYS.formData)
 

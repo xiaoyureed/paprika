@@ -5,7 +5,7 @@ import Comment from './ai-ask/Comment'
 import Palette from './Palette'
 import { setupTriggerDetector } from './prompt/useTriggerDetector'
 import { createPromptSelectorUI } from './prompt/createPromptSelectorUI'
-import { createModalUI, type ISharedStatus } from "./createModalUI"
+import { createUI } from './createUI'
 
 export default defineContentScript({
   matches: ['*://*/*'],
@@ -13,23 +13,47 @@ export default defineContentScript({
   main,
 })
 
+export interface ISharedStatus {
+  modalOpen: boolean
+}
 
 async function main(ctx: ContentScriptContext) {
-  const sharedStatus: ISharedStatus = {
+  const shared: ISharedStatus = {
     modalOpen: false,
   }
+
+  let paletteUI: Awaited<ReturnType<typeof createUI>> | null = null
 
   // 监听后台消息，按 action 分发组件
   browser.runtime.onMessage.addListener(
     async (message: IMessage, _sender, _sendResponse) => {
-      const comp = selectByMessage(message.action)
-
-      if (!comp || sharedStatus.modalOpen) {
+      if (message.action === 'palette' && shared.modalOpen) {
+        paletteUI?.remove()
+        paletteUI = null
+        shared.modalOpen = false
         return
       }
-      const ui = await createModalUI(ctx, comp, sharedStatus)
-      ui?.mount()
-      sharedStatus.modalOpen = true
+      
+      const comp = selectByMessage(message.action)
+      console.log('got msg:', message)
+      console.log('sharedStatus:', shared)
+
+      if (!comp || shared.modalOpen) {
+        return
+      }
+
+      const ui = await createUI(
+        ctx,
+        message.action,
+        comp,
+        'fixed top-0 left-0 right-0 z-99999 w-1/2 min-w-100 mx-auto h-auto mt-28 border border-border rounded-xl shadow-2xl',
+        () => {
+          shared.modalOpen = false
+        },
+      )
+      ui.mount()
+      paletteUI = ui
+      shared.modalOpen = true
     },
   )
 
@@ -37,12 +61,12 @@ async function main(ctx: ContentScriptContext) {
   setupTriggerDetector(
     ctx,
     (input, matchIndex) => {
-      sharedStatus.modalOpen = true
+      shared.modalOpen = true
       createPromptSelectorUI(ctx, input, matchIndex, () => {
-        sharedStatus.modalOpen = false
+        shared.modalOpen = false
       })
     },
-    () => sharedStatus.modalOpen,
+    () => shared.modalOpen,
   )
 }
 
