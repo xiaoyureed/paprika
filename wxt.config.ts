@@ -32,7 +32,7 @@ export default defineConfig({
   manifest: (meta) => {
     return {
       name: 'Paprika',
-      version: '1.0.0',
+      version: '0.1.0',
       description: 'A Chrome extension to ask questions or to manage your prompt templates',
       permissions: [
         'tabs',

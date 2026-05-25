@@ -32,6 +32,16 @@ Type `/t` in any text input or textarea on a page to trigger:
 
 Click "Prompt Manager" in the extension popup to open the management page. Supports creating, editing, and deleting prompts, with tag-based classification and full-text search.
 
+## Screenshots
+
+
+<div>
+  <img src="docs/pics/popup.png" alt="popup" />
+  <img src="docs/pics/palette.png" alt="palette" />
+  <img src="docs/pics/selector.png" alt="selector" />
+</div>
+
+
 ## Todo
 
 - [ ] **Context Menu**: Right-click on any page to trigger "Post Summary" or "Comment Summary" AI features.

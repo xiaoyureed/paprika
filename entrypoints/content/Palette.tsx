@@ -103,12 +103,13 @@ const Palette: React.FC<{
     browser.runtime.sendMessage({
       action: 'notepad',
       // payload: 'data:text/html,<html contenteditable>',
-      payload: 'data:text/html,<html contenteditable style="margin:2rem;font-size:18px;line-height:1.5;">Hi',
+      payload:
+        'data:text/html,<html contenteditable style="margin:2rem;font-size:18px;line-height:1.5;">Hi',
     } as IMessage)
   }
 
-  const handleInputChange = (value: string) => {
-    debouncedSearch(value)
+  function onPromptManagementSelected(): void {
+    browser.runtime.sendMessage({ action: 'openOptionsPage' } as IMessage)
   }
 
   return (
@@ -118,14 +119,17 @@ const Palette: React.FC<{
           <CommandInput
             placeholder="搜索 Tab 或者书签"
             autoFocus
-            onValueChange={handleInputChange}
+            onValueChange={debouncedSearch}
           />
           <CommandList ref={scrollRef} className="max-h-[70vh]">
             <CommandEmpty>No results found.</CommandEmpty>
 
             <CommandGroup heading="Suggestions">
-              <CommandItem onSelect={onRemove}>Exit</CommandItem>
-              <CommandItem onSelect={onNotepadSelected}>Notepad</CommandItem>
+              <CommandItem onSelect={onRemove}>退出</CommandItem>
+              <CommandItem onSelect={onNotepadSelected}>记事本</CommandItem>
+              <CommandItem onSelect={onPromptManagementSelected}>
+                提示词
+              </CommandItem>
             </CommandGroup>
             <CommandSeparator />
 

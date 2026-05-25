@@ -78,7 +78,7 @@ const PromptEditor: React.FC<PromptEditorProps> = ({
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 ">
           {/* 名称 */}
           <div className="space-y-1.5">
             <label className="text-sm font-medium text-foreground">名称</label>
@@ -95,7 +95,7 @@ const PromptEditor: React.FC<PromptEditorProps> = ({
             <Textarea
               placeholder="输入提示词模板内容..."
               rows={12}
-              className="resize-y min-h-[180px] text-sm leading-relaxed"
+              className="resize-y min-h-45 max-h-[60vh] text-sm leading-relaxed"
               {...register('content')}
             />
           </div>
